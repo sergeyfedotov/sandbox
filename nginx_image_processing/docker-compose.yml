@@ -1,0 +1,21 @@
+version: '2.0'
+
+services:
+  web:
+    build: ./web
+    ports:
+      - 5000:80
+    volumes:
+      - cached:/media/cached
+    depends_on:
+      - resizer
+
+  resizer:
+    build: ./resizer
+    environment:
+      - SECRET
+    volumes:
+      - ./resizer/uploaded:/media/uploaded
+
+volumes:
+  cached:
