@@ -7,13 +7,17 @@ services:
       sh -cex "
         composer run-script symfony-scripts;
         bin/console cache:warmup;
+        chown -R www-data ./var;
         exec php-fpm;
       "
     env_file: .env
+    environment:
+        XDEBUG_CONFIG: "remote_host=${XDEBUG_REMOTE_HOST}"
+        PHP_IDE_CONFIG: "serverName=Test"
     volumes:
-      - ./app:/srv
       - vendor:/srv/vendor
       - var:/srv/var
+      - ./app:/srv
 
   web:
     build: ./web

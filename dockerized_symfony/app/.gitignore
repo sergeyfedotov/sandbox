@@ -1,5 +1,6 @@
 /phpunit.xml
-/vendor
+/vendor/*
+!/vendor/.gitkeep
 /var/*
 !/var/cache
 /var/cache/*
