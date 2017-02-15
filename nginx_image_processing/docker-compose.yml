@@ -6,7 +6,7 @@ services:
     ports:
       - 5000:80
     volumes:
-      - cached:/media/cached
+      - cached:/var/www/cached
     depends_on:
       - resizer
 
@@ -15,7 +15,7 @@ services:
     environment:
       - SECRET
     volumes:
-      - ./resizer/uploaded:/media/uploaded
+      - ./resizer/uploaded:/var/www/uploaded
 
 volumes:
-  cached:
+    cached:
