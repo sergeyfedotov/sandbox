@@ -6,4 +6,5 @@ RUN apk add --no-cache \
 
 RUN mkdir /media/uploaded
 
-COPY ./nginx.conf ./resize.lua /usr/local/openresty/nginx/conf/
+COPY conf/ /usr/local/openresty/nginx/conf/
+COPY html/ /usr/local/openresty/nginx/html/
