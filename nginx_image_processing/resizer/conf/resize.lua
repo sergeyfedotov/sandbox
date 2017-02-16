@@ -1,9 +1,24 @@
+local LOCK_TIMEOUT = 5      -- 5 s
+local POLLING_DELAY = 0.01  -- 10 ms
+
 ngx.req.discard_body()
+
+local return_uri = ngx.var.return_uri
+
+local locks = ngx.shared.locks;
+local lock_key = ngx.md5_bin(return_uri)
+local locked = locks:add(lock_key, true, LOCK_TIMEOUT)
+
+if not locked then
+    ngx.sleep(POLLING_DELAY)
+    return ngx.exec(return_uri)
+end
 
 local full_path, format = ngx.var.full_path, ngx.var.format
 local width, height = tonumber(ngx.var.width), tonumber(ngx.var.height)
 
 local img, error = magick.load_image(full_path)
+
 if not img then
     ngx.log(ngx.ERR, error)
 else
