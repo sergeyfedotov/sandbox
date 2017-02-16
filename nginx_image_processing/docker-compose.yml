@@ -1,4 +1,4 @@
-version: '2.0'
+version: '2'
 
 services:
   web:
@@ -9,6 +9,7 @@ services:
       - cached:/var/www/cached
     depends_on:
       - resizer
+      - cache
 
   resizer:
     build: ./resizer
@@ -16,6 +17,9 @@ services:
       - SECRET
     volumes:
       - ./resizer/uploaded:/var/www/uploaded
+
+  cache:
+    build: ./cache
 
 volumes:
     cached:
