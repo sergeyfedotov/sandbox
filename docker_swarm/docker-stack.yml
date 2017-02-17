@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  master:
+    image: registry.gitlab.com/sergeyfedotov/master:latest
+    ports:
+      - 80:80
+    depends_on:
+      - slave
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+
+  slave:
+    image: registry.gitlab.com/sergeyfedotov/slave:latest
+    deploy:
+      replicas: 2
+      placement:
+          constraints:
+            - node.role == worker
+      restart_policy:
+        condition: on-failure
