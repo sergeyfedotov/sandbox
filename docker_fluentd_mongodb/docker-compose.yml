@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  fluentd:
+    build: fluentd/
+    depends_on:
+      - mongodb
+    ports:
+      - 24224:24224
+      - 5140:5140
+
+  mongodb:
+    build: mongodb/
+    ports:
+      - 27017:27017
+
+  app:
+    build: app/
+    depends_on:
+      - fluentd
+    ports:
+      - 5000:80
+    logging:
+      driver: fluentd
+      options:
+        tag: nginx
