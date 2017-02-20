@@ -3,24 +3,34 @@ version: '3'
 services:
   fluentd:
     build: fluentd/
-    depends_on:
-      - mongodb
     ports:
       - 24224:24224
-      - 5140:5140
 
   mongodb:
     build: mongodb/
     ports:
       - 27017:27017
 
+  influxdb:
+    image: influxdb:1.2-alpine
+
+  telegraf:
+    build: telegraf/
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+
   app:
     build: app/
-    depends_on:
-      - fluentd
     ports:
       - 5000:80
+    depends_on:
+      - fluentd
     logging:
       driver: fluentd
       options:
-        tag: nginx
+        tag: docker.nginx
