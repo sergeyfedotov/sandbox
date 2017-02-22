@@ -13,6 +13,8 @@ services:
 
   influxdb:
     image: influxdb:1.2-alpine
+    environment:
+      - INFLUXDB_HTTP_MAX_ROW_LIMIT=0
 
   telegraf:
     build: telegraf/
