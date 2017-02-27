@@ -15,6 +15,11 @@ services:
     image: influxdb:1.2-alpine
     environment:
       - INFLUXDB_HTTP_MAX_ROW_LIMIT=0
+      - INFLUXDB_DATA_QUERY_LOG_ENABLED=false
+      - INFLUXDB_DATA_CACHE_MAX_MEMORY_SIZE=268435456
+      - INFLUXDB_DATA_CACHE_SNAPSHOT_MEMORY_SIZE=26214400
+      - INFLUXDB_DATA_COMPACT_FULL_WRITE_COLD_DURATION=1h0m0s
+      - INFLUXDB_MONITOR_STORE_ENABLED=false
 
   telegraf:
     build: telegraf/
