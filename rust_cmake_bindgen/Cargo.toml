@@ -1,0 +1,7 @@
+[package]
+name = "drc"
+version = "0.1.0"
+authors = ["Sergey Fedotov <sergey89@gmail.com>"]
+
+[dependencies]
+cgal = { path = "cgal" }

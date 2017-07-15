@@ -1,0 +1,61 @@
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/.cargo
+
+before_script:
+  - apt-get update -yqq
+  - 'apt-get install -yqq --no-install-recommends
+      build-essential
+      clang-3.5
+      cmake
+      libcgal-dev
+      libclang-3.5-dev
+      llvm-3.5-dev
+    '
+  - cmake --version
+  - rustc --version && cargo --version
+
+stages:
+  - test
+  - build
+
+.stable: &stable
+  image: "scorpil/rust:stable"
+
+.nightly: &nightly
+  image: "scorpil/rust:nightly"
+  allow_failure: true
+
+.cargo: &cargo
+  cache:
+    key: "$CI_JOB_NAME/$CI_COMMIT_REF_NAME"
+    paths:
+      - target/
+      - .cargo/
+
+.test: &test
+  <<: *cargo
+  stage: test
+  script:
+    - cargo test --jobs 1 --release -p cgal
+    - cargo test --jobs 1 --release -p drc
+
+.build: &build
+  <<: *cargo
+  stage: build
+  script:
+    - cargo build --release
+  artifacts:
+    paths:
+      - target/release/drc
+
+test:stable:
+  <<: *test
+  <<: *stable
+
+test:nightly:
+  <<: *test
+  <<: *nightly
+
+build:stable:
+  <<: *build
+  <<: *stable

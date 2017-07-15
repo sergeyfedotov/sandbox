@@ -1,0 +1,11 @@
+[package]
+name = "cgal"
+version = "0.1.0"
+authors = ["Sergey Fedotov <sergey89@gmail.com>"]
+
+[dependencies]
+libc = "0.2.0"
+
+[build-dependencies]
+bindgen = "0.26"
+cmake = "0.1"
